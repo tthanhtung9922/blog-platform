@@ -1,0 +1,87 @@
+# Blog Platform — Production Documentation
+
+> **Stack:** Next.js 16.1 · ASP.NET Core 10 LTS · PostgreSQL 18 · Redis 8 · Docker / Kubernetes
+> **Architecture:** Monorepo (Nx) · Clean Architecture · DDD · CQRS · RBAC
+> **Phase:** Production · Long-term Roadmap
+
+---
+
+## Table of Contents
+
+1. [Team Structure](01-team-structure.md)
+   - 1.1 [Overview](01-team-structure.md#11-overview)
+   - 1.2 [Product & Strategy](01-team-structure.md#12-product--strategy)
+   - 1.3 [Design](01-team-structure.md#13-design)
+   - 1.4 [Engineering — Frontend](01-team-structure.md#14-engineering--frontend)
+   - 1.5 [Engineering — Backend](01-team-structure.md#15-engineering--backend)
+   - 1.6 [Platform & DevOps](01-team-structure.md#16-platform--devops)
+   - 1.7 [Quality Assurance](01-team-structure.md#17-quality-assurance)
+   - 1.8 [Security & Compliance](01-team-structure.md#18-security--compliance)
+   - 1.9 [Data & Analytics](01-team-structure.md#19-data--analytics)
+   - 1.10 [Go-to-Market & Operations](01-team-structure.md#110-go-to-market--operations)
+   - 1.11 [Team Size by Phase](01-team-structure.md#111-team-size-by-phase)
+2. [Folder Structure](02-folder-structure.md)
+   - 2.1 [Monorepo Root](02-folder-structure.md#21-monorepo-root)
+   - 2.2 [Backend — ASP.NET Core 10 (Clean Arch + DDD)](02-folder-structure.md#22-backend--aspnet-core-10-clean-arch--ddd)
+   - 2.3 [Frontend — Public Blog (blog-web)](02-folder-structure.md#23-frontend--public-blog-blog-web)
+   - 2.4 [Frontend — Admin CMS (blog-admin)](02-folder-structure.md#24-frontend--admin-cms-blog-admin)
+   - 2.5 [Shared Libraries](02-folder-structure.md#25-shared-libraries)
+   - 2.6 [Deploy — Docker & Kubernetes](02-folder-structure.md#26-deploy--docker--kubernetes)
+   - 2.7 [CI/CD — GitHub Actions](02-folder-structure.md#27-cicd--github-actions)
+3. [Architecture Decisions](03-architecture-decisions.md)
+   - [ADR-001: Monorepo với Nx](03-architecture-decisions.md#adr-001-monorepo-với-nx)
+   - [ADR-002: Clean Architecture + DDD](03-architecture-decisions.md#adr-002-clean-architecture--ddd)
+   - [ADR-003: 2 Frontend Apps](03-architecture-decisions.md#adr-003-2-frontend-apps)
+   - [ADR-004: RBAC Strategy](03-architecture-decisions.md#adr-004-rbac-strategy)
+   - [ADR-005: Caching Strategy](03-architecture-decisions.md#adr-005-caching-strategy)
+   - [ADR-006: ASP.NET Identity vs Domain User Aggregate](03-architecture-decisions.md#adr-006-aspnet-identity-vs-domain-user-aggregate)
+   - [ADR-007: Transaction Strategy — Register Flow](03-architecture-decisions.md#adr-007-transaction-strategy--register-flow)
+   - [ADR-008: Cache Opt-in Mechanism](03-architecture-decisions.md#adr-008-cache-opt-in-mechanism)
+   - [ADR-009: PostgreSQL FTS & Vietnamese Content](03-architecture-decisions.md#adr-009-postgresql-fts--vietnamese-content)
+4. [Long-term Roadmap](04-long-term-roadmap.md)
+   - [Phase 1 — Production Launch (Month 0–6)](04-long-term-roadmap.md#phase-1--production-launch-month-06)
+   - [Phase 2 — Growth (Month 6–18)](04-long-term-roadmap.md#phase-2--growth-month-618)
+   - [Phase 3 — Scale (Month 18–36)](04-long-term-roadmap.md#phase-3--scale-month-1836)
+   - [Phase 4 — Enterprise (Month 36+)](04-long-term-roadmap.md#phase-4--enterprise-month-36)
+5. [Open-Source Alternatives for Paid Services](05-open-source-alternatives-for-paid-services.md)
+6. [Database Schema](06-database-schema.md)
+   - 6.1 [ERD — Entity Relationship Diagram](06-database-schema.md#61-erd--entity-relationship-diagram)
+   - 6.2 [Table Definitions](06-database-schema.md#62-table-definitions)
+   - 6.3 [Index Strategy](06-database-schema.md#63-index-strategy)
+7. [Disaster Recovery & Backup](07-disaster-recovery--backup.md)
+   - 7.1 [PostgreSQL Backup Strategy](07-disaster-recovery--backup.md#71-postgresql-backup-strategy)
+   - 7.2 [Redis Persistence & Backup](07-disaster-recovery--backup.md#72-redis-persistence--backup)
+   - 7.3 [MinIO Object Storage Backup](07-disaster-recovery--backup.md#73-minio-object-storage-backup)
+   - 7.4 [Recovery Procedures](07-disaster-recovery--backup.md#74-recovery-procedures)
+   - 7.5 [RTO / RPO Targets](07-disaster-recovery--backup.md#75-rto--rpo-targets)
+8. [Observability & Incident Response](08-observability--incident-response.md)
+   - 8.1 [SLI / SLO / SLA Definitions](08-observability--incident-response.md#81-sli--slo--sla-definitions)
+   - 8.2 [Monitoring Stack](08-observability--incident-response.md#82-monitoring-stack)
+   - 8.3 [Alerting Rules](08-observability--incident-response.md#83-alerting-rules)
+   - 8.4 [Dashboards](08-observability--incident-response.md#84-dashboards)
+   - 8.5 [On-Call & Incident Response](08-observability--incident-response.md#85-on-call--incident-response)
+9. [API Contract & OpenAPI Specification](09-api-contract--openapi-specification.md)
+   - 9.1 [OpenAPI Overview](09-api-contract--openapi-specification.md#91-openapi-overview)
+   - 9.2 [Posts API](09-api-contract--openapi-specification.md#92-posts-api)
+   - 9.3 [Comments API](09-api-contract--openapi-specification.md#93-comments-api)
+   - 9.4 [Auth API](09-api-contract--openapi-specification.md#94-auth-api)
+   - 9.5 [Reactions API](09-api-contract--openapi-specification.md#95-reactions-api)
+   - 9.6 [Users API](09-api-contract--openapi-specification.md#96-users-api)
+   - 9.7 [Common Schemas](09-api-contract--openapi-specification.md#97-common-schemas)
+10. [Load Testing Baseline](10-load-testing-baseline.md)
+    - 10.1 [Capacity Targets by Phase](10-load-testing-baseline.md#101-capacity-targets-by-phase)
+    - 10.2 [Load Test Scenarios](10-load-testing-baseline.md#102-load-test-scenarios)
+    - 10.3 [k6 Test Configuration](10-load-testing-baseline.md#103-k6-test-configuration)
+    - 10.4 [Performance Budget](10-load-testing-baseline.md#104-performance-budget)
+11. [Data Migration Runbook](11-data-migration-runbook.md)
+    - 11.1 [EF Core Migration Workflow](11-data-migration-runbook.md#111-ef-core-migration-workflow)
+    - 11.2 [Migration Naming Convention](11-data-migration-runbook.md#112-migration-naming-convention)
+    - 11.3 [Pre-deployment Checklist](11-data-migration-runbook.md#113-pre-deployment-checklist)
+    - 11.4 [Rollback Procedures](11-data-migration-runbook.md#114-rollback-procedures)
+    - 11.5 [CI/CD Integration](11-data-migration-runbook.md#115-cicd-integration)
+
+---
+
+> **Last updated:** March 2026 *(rev. 5 — API Contract & OpenAPI Specification, Load Testing Baseline, Data Migration Runbook added; ADR-007/008/009; version updates: PostgreSQL 18, TypeScript 6.0, Tiptap v3, Node 24 LTS, Playwright 1.58; CASL CVE-2026-1774 fix; OSS alternatives)*
+> **Maintained by:** Engineering Team · Blog Platform
+> **Stack versions:** .NET 10 LTS · Next.js 16.1 · PostgreSQL 18 · Redis 8 · Nx (@nx-dotnet/core) · TypeScript 6.0 · Tailwind v4 · Tiptap v3 · Node 24 LTS · Playwright 1.58 · xUnit 3.2
