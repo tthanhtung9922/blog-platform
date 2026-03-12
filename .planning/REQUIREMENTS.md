@@ -144,21 +144,67 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 through AUTH-09 | Phase 3 | Pending |
-| RBAC-01 through RBAC-04 | Phase 3 | Pending |
-| POST-01 through POST-10 | Phase 4 | Pending |
-| TAG-01 through TAG-04 | Phase 3 | Pending |
-| WEB-01 through WEB-06 | Phase 4 | Pending |
-| SOCL-01 through SOCL-08 | Phase 5 | Pending |
-| ADMN-01 through ADMN-04 | Phase 6 | Pending |
-| SRCH-01 through SRCH-03 | Phase 6 | Pending |
-| INFR-01 through INFR-06 | Phase 7 | Pending |
+| INFR-01 | Phase 1 — Monorepo Foundation + Domain Layer | Pending |
+| AUTH-01 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-02 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-03 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-04 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-05 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-06 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-07 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-08 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| AUTH-09 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| RBAC-01 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| RBAC-02 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| RBAC-03 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| RBAC-04 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| TAG-01 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| TAG-02 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| TAG-03 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| TAG-04 | Phase 3 — Authentication + RBAC + Tags | Pending |
+| POST-01 | Phase 4 — Post Backend API | Pending |
+| POST-02 | Phase 4 — Post Backend API | Pending |
+| POST-03 | Phase 4 — Post Backend API | Pending |
+| POST-04 | Phase 4 — Post Backend API | Pending |
+| POST-05 | Phase 4 — Post Backend API | Pending |
+| POST-06 | Phase 4 — Post Backend API | Pending |
+| POST-07 | Phase 4 — Post Backend API | Pending |
+| POST-08 | Phase 4 — Post Backend API | Pending |
+| POST-09 | Phase 4 — Post Backend API | Pending |
+| POST-10 | Phase 4 — Post Backend API | Pending |
+| WEB-01 | Phase 5 — Public Blog Frontend | Pending |
+| WEB-02 | Phase 5 — Public Blog Frontend | Pending |
+| WEB-03 | Phase 5 — Public Blog Frontend | Pending |
+| WEB-04 | Phase 5 — Public Blog Frontend | Pending |
+| WEB-05 | Phase 5 — Public Blog Frontend | Pending |
+| WEB-06 | Phase 5 — Public Blog Frontend | Pending |
+| SOCL-01 | Phase 6 — Social Features | Pending |
+| SOCL-02 | Phase 6 — Social Features | Pending |
+| SOCL-03 | Phase 6 — Social Features | Pending |
+| SOCL-04 | Phase 6 — Social Features | Pending |
+| SOCL-05 | Phase 6 — Social Features | Pending |
+| SOCL-06 | Phase 6 — Social Features | Pending |
+| SOCL-07 | Phase 6 — Social Features | Pending |
+| SOCL-08 | Phase 6 — Social Features | Pending |
+| ADMN-01 | Phase 7 — Admin Features + Media Upload | Pending |
+| ADMN-02 | Phase 7 — Admin Features + Media Upload | Pending |
+| ADMN-03 | Phase 7 — Admin Features + Media Upload | Pending |
+| ADMN-04 | Phase 7 — Admin Features + Media Upload | Pending |
+| SRCH-01 | Phase 8 — Search | Pending |
+| SRCH-02 | Phase 8 — Search | Pending |
+| SRCH-03 | Phase 8 — Search | Pending |
+| INFR-02 | Phase 9 — CI/CD + Kubernetes | Pending |
+| INFR-03 | Phase 9 — CI/CD + Kubernetes | Pending |
+| INFR-04 | Phase 9 — CI/CD + Kubernetes | Pending |
+| INFR-05 | Phase 10 — Observability + Rate Limiting | Pending |
+| INFR-06 | Phase 10 — Observability + Rate Limiting | Pending |
 
 **Coverage:**
 - v1 requirements: 54 total
-- Mapped to phases: 54
-- Unmapped: 0 ✓
+- Mapped to phases: 53 (INFR-01 to Phase 1; AUTH/RBAC/TAG to Phase 3; POST to Phase 4; WEB to Phase 5; SOCL to Phase 6; ADMN to Phase 7; SRCH to Phase 8; INFR-02..04 to Phase 9; INFR-05..06 to Phase 10)
+- Phase 2 (Infrastructure + Application Pipeline): enabling phase with no standalone requirement IDs — foundational work that unblocks Phase 3+
+- Unmapped: 0 — all 54 requirements assigned ✓
 
 ---
 *Requirements defined: 2026-03-12*
-*Last updated: 2026-03-12 after initial definition*
+*Last updated: 2026-03-12 — Traceability updated after roadmap creation (10 phases)*
