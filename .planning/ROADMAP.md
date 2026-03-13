@@ -29,7 +29,13 @@ The platform builds in strict dependency order: the Domain layer (no external de
   3. EF Core migration runs cleanly against PostgreSQL 18 with the `unaccent` extension enabled
   4. `shared-contracts` is declared as an implicit dependency in both frontend `project.json` files and Nx graph reflects this
   5. All domain aggregates (Post, Comment, User), value objects (Slug, Email, ReadingTime, Tag), and domain events compile with no infrastructure references
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Nx workspace scaffold, project graph registration, Docker Compose (PostgreSQL 18 + Redis 8 + MinIO)
+- [ ] 01-02-PLAN.md — Blog.Domain: base classes, all 4 aggregates, value objects, domain events, repository interfaces
+- [ ] 01-03-PLAN.md — Blog.Infrastructure (minimal): BlogDbContext, entity configs, EF Core migrations + bare Blog.API
+- [ ] 01-04-PLAN.md — Blog.ArchTests: layer boundary tests + domain model integrity tests
 
 ### Phase 2: Infrastructure + Application Pipeline
 **Goal**: Blog.Infrastructure implements all Domain interfaces, Blog.Application has the complete MediatR 4-behavior pipeline registered in the correct order, Redis cache-aside with pattern invalidation is operational, and the Testcontainers integration test scaffold is ready for feature tests.
@@ -140,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Monorepo Foundation + Domain Layer | 0/TBD | Not started | - |
+| 1. Monorepo Foundation + Domain Layer | 0/4 | In progress | - |
 | 2. Infrastructure + Application Pipeline | 0/TBD | Not started | - |
 | 3. Authentication + RBAC + Tags | 0/TBD | Not started | - |
 | 4. Post Backend API | 0/TBD | Not started | - |
