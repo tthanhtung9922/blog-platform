@@ -20,15 +20,15 @@
 │  - Auth: NextAuth v5 (Reader) │  - User/role admin                       │
 │  - CASL permissions (read)    │  - CASL permissions (write)              │
 └───────────────┬───────────────┴──────────────────┬───────────────────────┘
-                │ shared-contracts                  │ shared-ui
-                │ (OpenAPI-generated TS types,       │ (Avatar, Badge,
-                │  permissions.ts, roles.ts)         │  Button, etc.)
-                └──────────────────┬────────────────┘
+                │ shared-contracts                 │ shared-ui
+                │ (OpenAPI-generated TS types,     │ (Avatar, Badge,
+                │  permissions.ts, roles.ts)       │  Button, etc.)
+                └──────────────────┬───────────────┘
                                    │ HTTPS REST (OpenAPI 3.1)
                                    ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                        PRESENTATION LAYER (Blog.API)                     │
-│  Controllers: Posts, Comments, Reactions, Users, Auth                   │
+│  Controllers: Posts, Comments, Reactions, Users, Auth                    │
 │  Middleware: ExceptionHandling → RateLimiting (Redis) → RequestLogging   │
 └──────────────────────────────────┬───────────────────────────────────────┘
                                    │ MediatR dispatch
@@ -41,11 +41,11 @@
 │    3. AuthorizationBehavior (policy checks)                              │
 │    4. CachingBehavior (Redis, opt-in via ICacheableQuery)                │
 │                                                                          │
-│  Features (CQRS): Posts | Comments | Reactions | Users | Auth           │
+│  Features (CQRS): Posts | Comments | Reactions | Users | Auth            │
 │  Abstractions: ICurrentUserService, IEmailService, IStorageService       │
-└──────────┬────────────────────────────────────────┬───────────────────────┘
-           │ repository interfaces                   │ domain services
-           ▼                                         ▼
+└──────────┬────────────────────────────────────────┬──────────────────────┘
+           │ repository interfaces                  │ domain services
+           ▼                                        ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                          DOMAIN LAYER (Blog.Domain)                      │
 │  Aggregates: Post (+ PostContent, PostVersion)                           │
@@ -53,7 +53,7 @@
 │              User (+ UserProfile)                                        │
 │  Value Objects: Slug, Tag, Email, ReadingTime                            │
 │  Domain Events: PostPublished, PostArchived, CommentAdded,               │
-│                 UserRegistered, UserProfileUpdated                        │
+│                 UserRegistered, UserProfileUpdated                       │
 │  Repository Interfaces: IPostRepository, ICommentRepository,             │
 │                         IUserRepository                                  │
 └──────────────────────────────────────────────────────────────────────────┘
@@ -63,10 +63,10 @@
 │                      INFRASTRUCTURE LAYER (Blog.Infrastructure)          │
 │  Persistence:  BlogDbContext (EF Core 10) → PostgreSQL 18                │
 │  Identity:     IdentityDbContext + IdentityService + JwtTokenService     │
-│  Caching:      RedisCacheService → Redis 8 (cache-aside, SCAN+DEL)      │
+│  Caching:      RedisCacheService → Redis 8 (cache-aside, SCAN+DEL)       │
 │  Storage:      MinioStorageService → MinIO                               │
 │  Email:        PostalEmailService (primary) / SendGridEmailService (fb)  │
-│  Search:       PostgresFullTextSearch (Phase 1) / Meilisearch (Phase 3) │
+│  Search:       PostgresFullTextSearch (Phase 1) / Meilisearch (Phase 3)  │
 │  Cross-ctx tx: IUnitOfWork (shared NpgsqlConnection + transaction)       │
 └──────────────────────────────────────────────────────────────────────────┘
            │ connects to
@@ -130,6 +130,7 @@ scripts/
 **When to use:** Any operation that modifies state (command) or reads state (query). The pipeline ensures validation runs before authorization, and authorization runs before caching — never cached invalid or unauthorized responses.
 
 **Pipeline registration order (critical — MediatR executes in registration order):**
+
 ```csharp
 services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
@@ -148,6 +149,7 @@ services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
 **Trade-offs:** Asynchronous invalidation means a brief window where stale cache may be served between commit and invalidation. Acceptable for a blog; unacceptable for financial data.
 
 **Key pattern — Lua script for atomic wildcard invalidation:**
+
 ```
 post-list:*  →  SCAN + DEL via Lua (never KEYS * in production)
 ```
