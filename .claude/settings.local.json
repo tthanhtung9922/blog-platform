@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(find /d/Projects/blog-platform -maxdepth 2 -type f \\\\\\( -name \"*.json\" -o -name \"*.js\" -o -name \"*.md\" -o -name \".cursor*\" -o -name \".cursorrules\" \\\\\\) 2>/dev/null | head -40)"
+    ]
+  }
+}
