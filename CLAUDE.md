@@ -1,97 +1,115 @@
-# Blog Platform — Claude Code Rules
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Status
 
-Planning & specification phase — documentation only, no application code yet. All docs define the architecture, schema, and API contracts for the platform.
-
-## What This Project Is
-
-A Vietnamese blog platform built as an Nx monorepo: ASP.NET Core 10 backend (Clean Architecture + DDD + CQRS), two Next.js 16.1 frontends (public reader + CMS admin), PostgreSQL 18, Redis 8 cache, MinIO storage.
-
-## Architecture Rules
-
-- **Layer dependency direction is Domain → Application → Infrastructure → Presentation.** Inner layers never reference outer layers. Domain has zero dependency on Infrastructure or any framework.
-- **IdentityUser and User (Domain aggregate) are separate models in separate tables**, linked only by a shared GUID. No inheritance, no navigation properties between them. IdentityUser handles authentication; User handles business logic. (ADR-006)
-- **Cross-context operations (Register, Ban) use a shared DbConnection** wrapped in IUnitOfWork — not separate transactions. Both IdentityDbContext and BlogDbContext share the same connection and transaction. (ADR-007)
-- **MediatR pipeline behavior order is fixed and immutable:** `ValidationBehavior → LoggingBehavior → AuthorizationBehavior → CachingBehavior`
-- **Caching is opt-in only.** A query is cached only if it implements `ICacheableQuery` with explicit CacheKey and CacheDuration. Never cache implicitly. (ADR-008)
-- **RBAC is enforced at all three layers:** API controllers (ASP.NET Authorization Policies), MediatR AuthorizationBehavior, and frontend CASL. All three must stay in sync via `shared-contracts/permissions.ts`. (ADR-004)
-- **Two separate Next.js apps** — `blog-web` (public SSG/ISR reader) and `blog-admin` (CMS dashboard). They serve different purposes and are deployed independently.
-- **Content is Tiptap v3 ProseMirror JSON**, not Markdown or MDX. Render via `@tiptap/react` EditorContent in read-only mode. Sanitize any HTML output with DOMPurify.
-- **Tailwind CSS v4** uses CSS-first configuration in `globals.css`. No `tailwind.config.ts`.
-- **Never hardcode secrets**, connection strings, or tokens in code or config files checked into git.
-
-## Domain Language
-
-| Term | Meaning |
-|------|---------|
-| Post | Aggregate Root — blog article (Draft → Published → Archived) |
-| Comment | Aggregate Root — user comment with nested replies via parent_id |
-| User | Domain aggregate for business logic — NOT IdentityUser |
-| IdentityUser | ASP.NET Identity model for authentication only (Infrastructure layer) |
-| Slug | Value Object — immutable URL-friendly identifier |
-| ICacheableQuery | Opt-in interface for query caching with CacheKey + CacheDuration |
-| Roles | Admin > Editor > Author > Reader (strict hierarchy) |
+This repository is currently in the **planning & specification phase** — all content is documentation only. No application code exists yet. The docs define the complete architecture, schema, and API contracts for the platform.
 
 ## Repository Layout
 
 ```
 blog-platform/
+├── docs/
+│   ├── blog-platform/          # Architecture docs (ADRs, schema, API spec, runbooks)
+│   └── git-commit-message-best-practices.md
+```
+
+The planned monorepo structure (not yet scaffolded) will be:
+```
 ├── apps/
-│   ├── blog-api/               # ASP.NET Core 10 (Clean Arch: Domain → Application → Infrastructure → API)
+│   ├── blog-api/               # ASP.NET Core 10 backend
 │   ├── blog-web/               # Next.js 16.1 public reader (SSG/ISR)
 │   └── blog-admin/             # Next.js 16.1 CMS dashboard
 ├── libs/
-│   ├── shared-contracts/       # OpenAPI-generated TypeScript types + permission definitions
+│   ├── shared-contracts/       # OpenAPI-generated TypeScript types
 │   └── shared-ui/              # Shared React component library
 ├── deploy/
-│   ├── docker/                 # Multi-stage Dockerfiles
-│   └── k8s/                    # Kustomize base + overlays (dev/staging/prod)
-├── tests/
-│   ├── Blog.UnitTests/         # Domain + Application unit tests
-│   ├── Blog.IntegrationTests/  # Testcontainers-based
-│   ├── Blog.ArchTests/         # NetArchTest layer enforcement
-│   └── load/                   # k6 load test scenarios
+│   ├── docker/
+│   └── k8s/                    # Base + overlays (dev/staging/prod)
 └── scripts/
-    ├── gen-types.sh             # OpenAPI → TypeScript codegen
-    └── migration.sh             # EF Core migration helper
+    └── gen-types.sh            # Regenerate TypeScript types from OpenAPI spec
 ```
 
-## Quick Reference: What Goes Where
+## Tech Stack
 
-| Concept | Location |
-|---------|----------|
-| Aggregates, Value Objects, Domain Events | `Blog.Domain/Aggregates/`, `ValueObjects/`, `DomainEvents/` |
-| Repository interfaces | `Blog.Domain/Repositories/` |
-| Commands & Queries (CQRS) | `Blog.Application/Features/<Aggregate>/Commands/` or `Queries/` |
-| FluentValidation validators | Same folder as their Command (`<Command>Validator.cs`) |
-| MediatR pipeline behaviors | `Blog.Application/Behaviors/` |
-| Repository implementations | `Blog.Infrastructure/Persistence/Repositories/` |
-| EF Core configurations | `Blog.Infrastructure/Persistence/Configurations/` |
-| Cache key definitions | `Blog.Infrastructure/Caching/CacheKeys.cs` |
-| Authorization policies | `Blog.Infrastructure/Authorization/Policies/` |
-| REST controllers | `Blog.API/Controllers/` |
-| CASL permission definitions | `apps/blog-admin/src/lib/permissions/ability.ts` |
-| Shared TypeScript types | `libs/shared-contracts/src/` |
+| Layer | Technology |
+|-------|-----------|
+| Backend | ASP.NET Core 10 LTS, C# |
+| Database | PostgreSQL 18 |
+| Cache | Redis 8 |
+| Object Storage | MinIO |
+| Frontend | Next.js 16.1, TypeScript 6.0, Tailwind CSS v4 |
+| Rich Text | Tiptap v3 (JSON format, not Markdown) |
+| UI Components | shadcn/ui |
+| Auth | NextAuth v5, ASP.NET Identity |
+| Authorization | CASL >= 6.8.0 (frontend), Policy-based (backend) |
+| Testing | xUnit 3.2 + Testcontainers (.NET), Playwright 1.58 (E2E) |
+| Monorepo | Nx with @nx-dotnet/core plugin |
+| CI/CD | GitHub Actions |
 
-## Commit Convention
+## Planned Commands
 
-Conventional Commits: `<type>[optional scope]: <description>`
+```bash
+# Start all services
+docker-compose up
 
-Types: `feat`, `fix`, `refactor`, `chore`, `perf`, `ci`, `ops`, `build`, `docs`, `style`, `revert`, `test`
+# Backend tests
+dotnet test Blog.UnitTests
+dotnet test Blog.IntegrationTests
+dotnet test Blog.ArchTests
 
-Branches: `feat/<name>`, `fix/<name>`, `chore/<name>`, `docs/<name>` — PRs target `dev`, then `dev` → `main`.
+# E2E tests
+npx playwright test
 
-## Scoped Rules
+# Regenerate TypeScript types from OpenAPI spec
+scripts/gen-types.sh
 
-> See `.claude/rules/backend-architecture.md` for Clean Arch + DDD + CQRS details.
-> See `.claude/rules/caching.md` for Redis cache-aside, opt-in, invalidation rules.
-> See `.claude/rules/security-auth.md` for RBAC 3-layer, roles, JWT, CASL rules.
-> See `.claude/rules/database.md` for schema conventions and migration workflow.
-> See `.claude/rules/frontend.md` for Next.js, Tailwind v4, Tiptap, component rules.
-> See `.claude/rules/api-design.md` for REST conventions, OpenAPI, error format.
-> See `.claude/rules/git-workflow.md` for commits, branching, PR process.
-> See `.claude/rules/testing.md` for xUnit, Testcontainers, Playwright, ArchTest rules.
+# EF Core migrations
+dotnet ef migrations add <MigrationName>
+dotnet ef database update
+
+# Nx builds
+nx build blog-api
+nx build blog-web
+nx build blog-admin
+```
+
+## Architecture — Key Design Decisions
+
+### Backend: Clean Architecture + DDD
+
+Four layers: **Domain → Application → Infrastructure → Presentation**
+
+- **Domain** (`Blog.Domain`): Aggregates (Post, Comment, User), Value Objects (Slug, Email, ReadingTime, Tag), Domain Events, Repository interfaces only
+- **Application** (`Blog.Application`): CQRS via MediatR. Pipeline behaviors in order: ValidationBehavior (FluentValidation) → LoggingBehavior → AuthorizationBehavior → CachingBehavior
+- **Infrastructure** (`Blog.Infrastructure`): EF Core, Redis, MinIO, email (Postal + SendGrid fallback)
+- **Presentation** (`Blog.API`): REST controllers, middleware
+
+**Critical:** `IdentityUser` (ASP.NET Identity) and `User` (Domain aggregate) are **separate models in separate tables**, sharing only a GUID ID. Do not conflate them — see ADR-006.
+
+### Caching
+
+Cache-aside via Redis. Caching is **opt-in**: queries must implement `ICacheableQuery` to be cached (see ADR-008). Pattern-based cache invalidation is triggered by Domain Events.
+
+### Frontend: Two Separate Next.js Apps
+
+- **blog-web**: Public reader — uses SSG/ISR for performance. Posts rendered from Tiptap JSON (use `@tiptap/react` EditorContent in read-only mode; sanitize HTML output with DOMPurify).
+- **blog-admin**: CMS dashboard — interactive with Tiptap v3 editor, CASL-based permission checks.
+
+**Tailwind CSS v4** uses CSS-first configuration (no `tailwind.config.ts`).
+
+### Authorization (3 Layers)
+
+RBAC is enforced at all three layers: API controllers, MediatR AuthorizationBehavior, and frontend CASL. Roles: Admin, Editor, Author, Reader. See `docs/blog-platform/03-architecture-decisions.md` ADR-004 for the full permission matrix.
+
+### Search
+
+Phase 1: PostgreSQL FTS with custom Vietnamese configuration + unaccent extension. Phase 3: migrate to Meilisearch (see ADR-009).
+
+### Cross-Context Transactions
+
+Shared `DbConnection` (not DbContext) for operations spanning ASP.NET Identity and Domain contexts, e.g., user registration and ban (see ADR-007).
 
 ## Key Documentation
 
@@ -103,3 +121,13 @@ Branches: `feat/<name>`, `fix/<name>`, `chore/<name>`, `docs/<name>` — PRs tar
 | `docs/blog-platform/02-folder-structure.md` | Annotated monorepo layout |
 | `docs/blog-platform/11-data-migration-runbook.md` | EF Core migration workflow and rollback |
 | `docs/blog-platform/07-disaster-recovery--backup.md` | PostgreSQL/Redis/MinIO backup strategies |
+
+## Commit Convention
+
+Follow Conventional Commits (see `docs/git-commit-message-best-practices.md`):
+
+```
+<type>[optional scope]: <description>
+```
+
+Types: `feat`, `fix`, `refactor`, `chore`, `perf`, `ci`, `ops`, `build`, `docs`, `style`, `revert`, `test`
