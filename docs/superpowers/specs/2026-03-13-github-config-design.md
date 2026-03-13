@@ -11,7 +11,7 @@
 The blog-platform repository is in the planning phase. No application code exists yet. The goal is to initialize a complete `.github/` configuration that:
 
 1. Enforces contribution standards immediately (PR template, issue templates, CODEOWNERS)
-2. Scaffolds CI/CD workflow stubs that match Phase 9 success criteria exactly, so wiring in real commands phase by phase requires no structural changes
+2. Scaffolds CI/CD workflow stubs that match Phase 9 success criteria, so wiring in real commands phase by phase requires no structural changes. The `test-e2e` job is included as a forward-looking stub beyond Phase 9 criteria.
 3. Keeps dependencies up to date via Dependabot
 
 **Branching strategy:** `main` + `dev`. Feature branches PR into `dev`. `dev` merges into `main` for releases.
@@ -24,7 +24,7 @@ The blog-platform repository is in the planning phase. No application code exist
 .github/
 ├── workflows/
 │   ├── ci.yml                  # PR gate: type-check, lint, test, gen-types freshness
-│   ├── cd-staging.yml          # Auto-deploy to staging on push to dev
+│   ├── cd-staging.yml          # Auto-deploy to staging on push to main
 │   ├── cd-prod.yml             # Deploy to prod on push to main (manual approval gate)
 │   └── gen-types-check.yml     # Reusable workflow: shared-contracts diff check
 ├── ISSUE_TEMPLATE/
@@ -51,20 +51,22 @@ The blog-platform repository is in the planning phase. No application code exist
 | `type-check` | — | TypeScript type check across blog-web and blog-admin |
 | `lint` | — | ESLint (frontend) + dotnet format check (backend) |
 | `test-unit` | — | dotnet test Blog.UnitTests |
-| `test-integration` | `test-unit` | dotnet test Blog.IntegrationTests (Testcontainers) |
-| `test-e2e` | `test-unit` | npx playwright test |
+| `test-integration` | `test-unit` (fail-fast: unit failures indicate build issues that will cause integration failures) | dotnet test Blog.IntegrationTests (Testcontainers) |
+| `test-e2e` | `test-unit` (forward stub — beyond Phase 9 criteria, scaffolded early) | npx playwright test |
 | `gen-types-check` | — | Calls reusable gen-types-check.yml; fails if shared-contracts diff detected |
 
 All jobs are stubs (`run: echo "stub"`) with `# TODO (Phase N):` comments. The job graph and `needs:` wiring are real.
 
 ### `cd-staging.yml` — Staging Deployment
 
-**Trigger:** `push` to `dev`
+**Trigger:** `push` to `main` (per Phase 9 criterion: "Merge to main automatically deploys to staging")
 **Environment:** `staging`
 
 **Jobs:**
 - `build` — build all apps
 - `deploy-staging` — deploy to Kubernetes staging overlay (needs `build`)
+
+Note: `cd-staging.yml` and `cd-prod.yml` are intentionally independent workflow files for simplicity — no shared reusable build workflow. Both have their own `build` job. This trades a small amount of duplication for easier per-environment debugging.
 
 ### `cd-prod.yml` — Production Deployment
 
@@ -73,11 +75,11 @@ All jobs are stubs (`run: echo "stub"`) with `# TODO (Phase N):` comments. The j
 
 **Jobs:**
 - `build` — build all apps
-- `deploy-prod` — deploy to Kubernetes prod overlay (needs `build`, blocked on manual approval)
+- `deploy-prod` — deploy to Kubernetes prod overlay (needs `build`; blocked by the `production` GitHub Environment protection rule which requires manual reviewer approval before the job runs — configured in repository Settings → Environments → production → Required reviewers)
 
 ### `gen-types-check.yml` — Reusable Workflow
 
-**Trigger:** `workflow_call`
+**Trigger:** `workflow_call`, `workflow_dispatch` (manual invocation for debugging freshness failures directly)
 Runs `scripts/gen-types.sh` and checks for a diff against committed `shared-contracts`. Fails CI if types are stale.
 
 ---
@@ -123,8 +125,9 @@ apps/blog-api/              @<org>/backend-team
 apps/blog-web/              @<org>/frontend-team
 apps/blog-admin/            @<org>/frontend-team
 
-# Shared contracts
+# Shared libs
 libs/shared-contracts/      @<org>/core-team
+libs/shared-ui/             @<org>/frontend-team
 
 # Infrastructure
 deploy/                     @<org>/platform-team
@@ -136,8 +139,10 @@ All team slugs are placeholders — replace with actual GitHub team names.
 ### `dependabot.yml`
 
 - **npm** — weekly, directory `/` (monorepo root), label `dependencies`
-- **nuget** — weekly, directory `apps/blog-api` (once scaffolded), label `dependencies`
-- Both target `dev` branch (not `main`)
+- **nuget** — weekly, directory `apps/blog-api` (once scaffolded; no-op until directory exists), label `dependencies`
+- **docker** — weekly, directory `deploy/docker/`, label `dependencies`
+- **github-actions** — weekly, directory `/`, label `dependencies`
+- All target `dev` branch (not `main`)
 
 ---
 
