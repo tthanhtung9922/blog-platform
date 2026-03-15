@@ -79,7 +79,7 @@
 
 ### Infrastructure
 
-- [ ] **INFR-01**: All services (API, PostgreSQL, Redis, MinIO) run locally via Docker Compose
+- [x] **INFR-01**: All services (API, PostgreSQL, Redis, MinIO) run locally via Docker Compose
 - [ ] **INFR-02**: Application deploys to Kubernetes with base + dev/staging/prod overlay manifests (Kustomize)
 - [ ] **INFR-03**: GitHub Actions CI pipeline runs on all PRs: unit tests, integration tests, type check, lint, and gen-types freshness gate
 - [ ] **INFR-04**: GitHub Actions CD deploys to staging automatically on merge to main; production deployment requires manual approval
@@ -144,7 +144,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFR-01 | Phase 1 — Monorepo Foundation + Domain Layer | Pending |
+| INFR-01 | Phase 1 — Monorepo Foundation + Domain Layer | Complete |
 | AUTH-01 | Phase 3 — Authentication + RBAC + Tags | Pending |
 | AUTH-02 | Phase 3 — Authentication + RBAC + Tags | Pending |
 | AUTH-03 | Phase 3 — Authentication + RBAC + Tags | Pending |

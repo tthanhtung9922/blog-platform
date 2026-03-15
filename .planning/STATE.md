@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-03-13T14:17:14.018Z"
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-03-15T05:51:09.908Z"
 last_activity: 2026-03-12 — Roadmap created, 10 phases derived from 54 v1 requirements
 progress:
   total_phases: 10
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 4
+  completed_plans: 1
   percent: 0
 ---
 
@@ -50,6 +50,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-monorepo-foundation-domain-layer P01 | 8min | 3 tasks | 19 files |
 
 ## Accumulated Context
 
@@ -61,6 +62,11 @@ Recent decisions affecting current work:
 - [Roadmap]: Use `@nx/dotnet` (official, Nx 22+) NOT `@nx-dotnet/core` (deprecated September 2025) — CLAUDE.md contains the wrong plugin name
 - [Roadmap]: Phase 4 needs research-phase before planning — Tiptap v3 server-side HTML rendering has no official .NET implementation; two options (Node.js sidecar vs. server-action pre-rendering) need architectural decision documented as ADR
 - [Roadmap]: Phase 8 needs research-phase before planning — Vietnamese `unaccent` rules file completeness must be validated against all 6 tonal marks before CI
+- [Phase 01-01]: Use @nx/dotnet (official Nx 22 plugin) NOT @nx-dotnet/core (deprecated September 2025)
+- [Phase 01-01]: BlogPlatform.slnx — dotnet new sln in .NET 10 creates .slnx (new XML format) not .sln
+- [Phase 01-01]: PostgreSQL 18 Docker volume at /var/lib/postgresql not /var/lib/postgresql/data (PGDATA path changed in PG18)
+- [Phase 01-01]: MediatR is the only external NuGet reference allowed in Blog.Domain (for IDomainEvent : INotification)
+- [Phase 01-01]: MinIO bucket creation via mc init container, not API startup code
 
 ### Pending Todos
 
@@ -74,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T14:17:14.015Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-monorepo-foundation-domain-layer/01-CONTEXT.md
+Last session: 2026-03-15T05:51:09.904Z
+Stopped at: Completed 01-01-PLAN.md
+Resume file: None
