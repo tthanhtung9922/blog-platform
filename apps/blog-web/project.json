@@ -1,0 +1,5 @@
+{
+  "name": "blog-web",
+  "tags": ["type:app", "scope:frontend"],
+  "implicitDependencies": ["shared-contracts"]
+}

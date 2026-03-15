@@ -1,0 +1,4 @@
+{
+  "name": "blog-domain",
+  "tags": ["type:lib", "scope:backend", "layer:domain"]
+}

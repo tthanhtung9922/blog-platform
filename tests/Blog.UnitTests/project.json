@@ -1,0 +1,4 @@
+{
+  "name": "blog-unit-tests",
+  "tags": ["type:test", "scope:backend"]
+}
