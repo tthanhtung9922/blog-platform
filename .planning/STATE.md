@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-03-15T06:10:37.317Z"
+stopped_at: Completed 01-04-PLAN.md
+last_updated: "2026-03-15T06:15:51.616Z"
 last_activity: 2026-03-12 — Roadmap created, 10 phases derived from 54 v1 requirements
 progress:
   total_phases: 10
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-monorepo-foundation-domain-layer P01 | 8min | 3 tasks | 19 files |
 | Phase 01-monorepo-foundation-domain-layer P02 | 6 | 2 tasks | 34 files |
 | Phase 01-monorepo-foundation-domain-layer P03 | 7 | 2 tasks | 17 files |
+| Phase 01-monorepo-foundation-domain-layer P04 | 3 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,7 @@ Recent decisions affecting current work:
 - [Phase 01-03]: EF Core suppressTransaction uses Sql(sql, suppressTransaction: true) not a Migration property — SuppressTransaction is on SqlOperation not Migration base class in EF Core 10
 - [Phase 01-03]: OwnsMany post_tags composite key uses CLR property names HasKey('PostId', nameof(TagReference.TagId)) not column names — column name strings cause 'no property type specified' EF design-time error
 - [Phase 01-03]: SocialLinks ValueComparer added for JSONB Dictionary<string,string> to enable EF change tracking on in-place dictionary mutations
+- [Phase 01-04]: MediatR allowed in Blog.Domain.Common AND Blog.Domain.DomainEvents — domain events implement IDomainEvent which extends MediatR.INotification; NetArchTest sees this as MediatR dependency on event types
 
 ### Pending Todos
 
@@ -88,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T06:10:37.312Z
-Stopped at: Completed 01-03-PLAN.md
+Last session: 2026-03-15T06:15:51.612Z
+Stopped at: Completed 01-04-PLAN.md
 Resume file: None
