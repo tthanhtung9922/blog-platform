@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-15T05:59:08.497Z"
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-03-15T06:10:37.317Z"
 last_activity: 2026-03-12 — Roadmap created, 10 phases derived from 54 v1 requirements
 progress:
   total_phases: 10
   completed_phases: 0
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 3
   percent: 0
 ---
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01-monorepo-foundation-domain-layer P01 | 8min | 3 tasks | 19 files |
 | Phase 01-monorepo-foundation-domain-layer P02 | 6 | 2 tasks | 34 files |
+| Phase 01-monorepo-foundation-domain-layer P03 | 7 | 2 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 - [Phase 01-02]: User aggregate uses standalone GUID matching IdentityUser.Id (ADR-006) — no inheritance, no FK constraint
 - [Phase 01-02]: Comment.AddReply() throws DomainException when called on reply — nesting limited to 1 level enforced in Domain
 - [Phase 01-02]: TagReference is a value object on Post holding only TagId — Post does not reference Tag entity directly
+- [Phase 01-03]: EF Core suppressTransaction uses Sql(sql, suppressTransaction: true) not a Migration property — SuppressTransaction is on SqlOperation not Migration base class in EF Core 10
+- [Phase 01-03]: OwnsMany post_tags composite key uses CLR property names HasKey('PostId', nameof(TagReference.TagId)) not column names — column name strings cause 'no property type specified' EF design-time error
+- [Phase 01-03]: SocialLinks ValueComparer added for JSONB Dictionary<string,string> to enable EF change tracking on in-place dictionary mutations
 
 ### Pending Todos
 
@@ -84,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T05:59:08.493Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-15T06:10:37.312Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None
