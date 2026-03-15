@@ -1,0 +1,35 @@
+{
+  "name": "blog-platform",
+  "version": "1.0.0",
+  "description": "A production-grade blog platform for Vietnamese content creators and readers. Built as a self-hosted, open-source Nx monorepo with an ASP.NET Core 10 backend and two Next.js 16.1 frontends.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tthanhtung9922/blog-platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/tthanhtung9922/blog-platform/issues"
+  },
+  "homepage": "https://github.com/tthanhtung9922/blog-platform#readme",
+  "devDependencies": {
+    "@nx/dotnet": "^22.5.4",
+    "@nx/next": "^22.5.4",
+    "nx": "22.5.4"
+  },
+  "nx": {},
+  "dependencies": {
+    "next": "~16.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

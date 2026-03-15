@@ -1,1 +1,33 @@
 .obsidian
+
+# Nx
+.nx/cache
+.nx/workspace-data
+node_modules
+
+# .NET build artifacts
+**/bin/
+**/obj/
+/artifacts/
+
+# .NET user files
+*.user
+*.suo
+.vs/
+*.userprefs
+
+# EF Core migrations snapshot (keep migrations, ignore auto-generated designer files if desired)
+# But we want to track migrations, so no exclusion here
+
+# Next.js
+.next
+out
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
