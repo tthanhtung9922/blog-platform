@@ -55,13 +55,15 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .OnDelete(DeleteBehavior.Cascade);
 
         // Tag collection: map List<TagReference> VOs to a post_tags join table
-        // EF Core maps owned entity collections — TagReference has only TagId
+        // EF Core maps owned entity collections — TagReference has only TagId.
+        // Key: composite (post_id FK shadow property, TagId CLR property).
+        // Shadow FK is auto-named by EF when using .WithOwner().HasForeignKey("PostId").
         builder.OwnsMany(p => p.Tags, tagBuilder =>
         {
             tagBuilder.ToTable("post_tags");
-            tagBuilder.WithOwner().HasForeignKey("post_id");
+            tagBuilder.WithOwner().HasForeignKey("PostId");
             tagBuilder.Property(t => t.TagId).HasColumnName("tag_id").IsRequired();
-            tagBuilder.HasKey("post_id", "tag_id");
+            tagBuilder.HasKey("PostId", nameof(TagReference.TagId));
         });
     }
 }
