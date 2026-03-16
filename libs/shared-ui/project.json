@@ -1,0 +1,4 @@
+{
+  "name": "shared-ui",
+  "tags": ["type:lib", "scope:shared", "scope:frontend"]
+}
