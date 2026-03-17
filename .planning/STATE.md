@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-infrastructure-application-pipeline/02-03-PLAN.md
-last_updated: "2026-03-17T15:44:01.727Z"
+stopped_at: Completed 02-infrastructure-application-pipeline/02-04-PLAN.md
+last_updated: "2026-03-17T15:52:29.296Z"
 last_activity: 2026-03-12 — Roadmap created, 10 phases derived from 54 v1 requirements
 progress:
   total_phases: 10
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 0
 ---
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-infrastructure-application-pipeline P01 | 4min | 2 tasks | 22 files |
 | Phase 02-infrastructure-application-pipeline P02 | 4min | 2 tasks | 13 files |
 | Phase 02-infrastructure-application-pipeline P03 | 3min | 2 tasks | 11 files |
+| Phase 02-infrastructure-application-pipeline P04 | 5min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,9 @@ Recent decisions affecting current work:
 - [Phase 02-03]: TagCreatedCacheInvalidationHandler uses private const pattern string instead of CacheKeys.Patterns.TagList to prevent Application->Infrastructure layer violation
 - [Phase 02-03]: BlogDbContext registration kept in Program.cs for EF Core migration tooling compatibility — dotnet ef migrations requires DbContext reachable from startup project
 - [Phase 02-03]: public partial class Program {} at end of Program.cs enables WebApplicationFactory<Program> across assembly boundaries in Blog.IntegrationTests
+- [Phase 02-04]: Respawn 7.0 Table type is in Respawn.Graph namespace — must use using Respawn.Graph explicitly in IntegrationTestFixture
+- [Phase 02-04]: Testcontainers 4.x parameterless builder constructors are obsolete — pass image string in constructor: new PostgreSqlBuilder("postgres:18")
+- [Phase 02-04]: SC1 pipeline order test uses DI reflection (GetServices<IPipelineBehavior<>>) not NetArchTest — NetArchTest cannot verify runtime DI registration order
 
 ### Pending Todos
 
@@ -102,6 +106,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T15:44:01.723Z
-Stopped at: Completed 02-infrastructure-application-pipeline/02-03-PLAN.md
+Last session: 2026-03-17T15:52:29.292Z
+Stopped at: Completed 02-infrastructure-application-pipeline/02-04-PLAN.md
 Resume file: None

@@ -7,7 +7,7 @@ The platform builds in strict dependency order: the Domain layer (no external de
 ## Phases
 
 - [x] **Phase 1: Monorepo Foundation + Domain Layer** - Nx scaffold, Blog.Domain aggregates, EF Core migrations, PostgreSQL setup, Docker Compose (completed 2026-03-15)
-- [ ] **Phase 2: Infrastructure + Application Pipeline** - Blog.Infrastructure, Blog.Application, MediatR 4-behavior pipeline, Redis cache-aside, Testcontainers scaffold
+- [x] **Phase 2: Infrastructure + Application Pipeline** - Blog.Infrastructure, Blog.Application, MediatR 4-behavior pipeline, Redis cache-aside, Testcontainers scaffold (completed 2026-03-17)
 - [ ] **Phase 3: Authentication + RBAC + Tags** - Full auth flow, 3-layer RBAC, Tags CRUD — root dependency for all features
 - [ ] **Phase 4: Post Backend API** - Complete Post aggregate lifecycle, versioning, autosave, Tiptap JSON pipeline, RevalidationService
 - [ ] **Phase 5: Public Blog Frontend** - blog-web SSG/ISR post list, post detail, tag/author pages, SEO meta tags, sitemap
@@ -153,7 +153,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Monorepo Foundation + Domain Layer | 4/4 | Complete   | 2026-03-15 |
-| 2. Infrastructure + Application Pipeline | 3/4 | In Progress|  |
+| 2. Infrastructure + Application Pipeline | 4/4 | Complete   | 2026-03-17 |
 | 3. Authentication + RBAC + Tags | 0/TBD | Not started | - |
 | 4. Post Backend API | 0/TBD | Not started | - |
 | 5. Public Blog Frontend | 0/TBD | Not started | - |
