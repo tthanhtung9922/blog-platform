@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-03-15T06:20:25.532Z"
+stopped_at: Completed 02-infrastructure-application-pipeline/02-04-PLAN.md
+last_updated: "2026-03-17T15:58:39.972Z"
 last_activity: 2026-03-12 — Roadmap created, 10 phases derived from 54 v1 requirements
 progress:
   total_phases: 10
-  completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  completed_phases: 2
+  total_plans: 8
+  completed_plans: 8
   percent: 0
 ---
 
@@ -54,6 +54,10 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-monorepo-foundation-domain-layer P02 | 6 | 2 tasks | 34 files |
 | Phase 01-monorepo-foundation-domain-layer P03 | 7 | 2 tasks | 17 files |
 | Phase 01-monorepo-foundation-domain-layer P04 | 3 | 1 tasks | 2 files |
+| Phase 02-infrastructure-application-pipeline P01 | 4min | 2 tasks | 22 files |
+| Phase 02-infrastructure-application-pipeline P02 | 4min | 2 tasks | 13 files |
+| Phase 02-infrastructure-application-pipeline P03 | 3min | 2 tasks | 11 files |
+| Phase 02-infrastructure-application-pipeline P04 | 5min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -77,6 +81,18 @@ Recent decisions affecting current work:
 - [Phase 01-03]: OwnsMany post_tags composite key uses CLR property names HasKey('PostId', nameof(TagReference.TagId)) not column names — column name strings cause 'no property type specified' EF design-time error
 - [Phase 01-03]: SocialLinks ValueComparer added for JSONB Dictionary<string,string> to enable EF change tracking on in-place dictionary mutations
 - [Phase 01-04]: MediatR allowed in Blog.Domain.Common AND Blog.Domain.DomainEvents — domain events implement IDomainEvent which extends MediatR.INotification; NetArchTest sees this as MediatR dependency on event types
+- [Phase 02-01]: MediatR 14.1.0 used in both Blog.Domain and Blog.Application — version must be consistent to avoid assembly binding conflicts
+- [Phase 02-01]: IUnitOfWork is BlogDbContext-only in Phase 2 — Phase 3 will add cross-context IdentityDbContext overload for Register/Ban operations
+- [Phase 02-01]: CachingBehavior has zero-overhead early return for non-ICacheableQuery requests — no cache interaction for uncacheable queries
+- [Phase 02-02]: UnitOfWork clears domain events BEFORE SaveChangesAsync to prevent double-dispatch; handler failures after commit are logged and swallowed
+- [Phase 02-02]: RedisCacheService.RemoveByPatternAsync uses Lua SCAN+DEL with ScriptEvaluateAsync(values:) — never KEYS which blocks Redis event loop
+- [Phase 02-02]: NoOp stubs (email/storage) log debug and return gracefully — not throw — so Phase 2 works without SMTP or MinIO infrastructure
+- [Phase 02-03]: TagCreatedCacheInvalidationHandler uses private const pattern string instead of CacheKeys.Patterns.TagList to prevent Application->Infrastructure layer violation
+- [Phase 02-03]: BlogDbContext registration kept in Program.cs for EF Core migration tooling compatibility — dotnet ef migrations requires DbContext reachable from startup project
+- [Phase 02-03]: public partial class Program {} at end of Program.cs enables WebApplicationFactory<Program> across assembly boundaries in Blog.IntegrationTests
+- [Phase 02-04]: Respawn 7.0 Table type is in Respawn.Graph namespace — must use using Respawn.Graph explicitly in IntegrationTestFixture
+- [Phase 02-04]: Testcontainers 4.x parameterless builder constructors are obsolete — pass image string in constructor: new PostgreSqlBuilder("postgres:18")
+- [Phase 02-04]: SC1 pipeline order test uses DI reflection (GetServices<IPipelineBehavior<>>) not NetArchTest — NetArchTest cannot verify runtime DI registration order
 
 ### Pending Todos
 
@@ -90,6 +106,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T06:15:51.612Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-03-17T15:52:29.292Z
+Stopped at: Completed 02-infrastructure-application-pipeline/02-04-PLAN.md
 Resume file: None

@@ -6,8 +6,9 @@ The platform builds in strict dependency order: the Domain layer (no external de
 
 ## Phases
 
-- [x] **Phase 1: Monorepo Foundation + Domain Layer** - Nx scaffold, Blog.Domain aggregates, EF Core migrations, PostgreSQL setup, Docker Compose (completed 2026-03-15)
-- [ ] **Phase 2: Infrastructure + Application Pipeline** - Blog.Infrastructure, Blog.Application, MediatR 4-behavior pipeline, Redis cache-aside, Testcontainers scaffold
+- [x] **Phase 1: Monorepo Foundation + Domain Layer** - Nx scaffold, Blog.Domain aggregates, EF Core migrations, PostgreSQL setup, Docker Compose (completed 2026-03-15)
+- [x] **Phase 2: Infrastructure + Application Pipeline** - Blog.Infrastructure, Blog.Application, MediatR 4-behavior pipeline, Redis cache-aside, Testcontainers scaffold
+ (completed 2026-03-17)
 - [ ] **Phase 3: Authentication + RBAC + Tags** - Full auth flow, 3-layer RBAC, Tags CRUD — root dependency for all features
 - [ ] **Phase 4: Post Backend API** - Complete Post aggregate lifecycle, versioning, autosave, Tiptap JSON pipeline, RevalidationService
 - [ ] **Phase 5: Public Blog Frontend** - blog-web SSG/ISR post list, post detail, tag/author pages, SEO meta tags, sitemap
@@ -47,7 +48,13 @@ Plans:
   3. A query implementing `ICacheableQuery` is served from Redis on the second call — verified by an integration test
   4. Redis pattern-based cache invalidation via Lua script clears the correct key patterns when a Domain Event fires
   5. Integration test suite runs against real PostgreSQL 18 + Redis 8 via Testcontainers with no environment-specific config
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Blog.Application project: 7 abstractions, 4 MediatR behaviors in fixed order, Result<T>, AddBlogApplication()
+- [ ] 02-02-PLAN.md — Blog.Infrastructure extension: 4 repo implementations, UnitOfWork, RedisCacheService (Lua), services, AddBlogInfrastructure()
+- [ ] 02-03-PLAN.md — Pipeline test vehicles (GetTagListQuery, CreateTagCommand, TagCreatedEventHandler) + Blog.API wiring (Program.cs, GlobalExceptionHandler, TagsController)
+- [ ] 02-04-PLAN.md — Blog.IntegrationTests project (Testcontainers + WebApplicationFactory + Respawn) + SC1-SC5 tests
 
 ### Phase 3: Authentication + RBAC + Tags
 **Goal**: Users can register, verify email, log in via email/password or OAuth, manage sessions, and reset passwords — and the 3-layer RBAC (API + MediatR + CASL) is enforced across all roles. Tags CRUD is included here because it is required before authors can create posts.
@@ -147,7 +154,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Monorepo Foundation + Domain Layer | 4/4 | Complete   | 2026-03-15 |
-| 2. Infrastructure + Application Pipeline | 0/TBD | Not started | - |
+| 2. Infrastructure + Application Pipeline | 4/4 | Complete   | 2026-03-17 |
 | 3. Authentication + RBAC + Tags | 0/TBD | Not started | - |
 | 4. Post Backend API | 0/TBD | Not started | - |
 | 5. Public Blog Frontend | 0/TBD | Not started | - |
