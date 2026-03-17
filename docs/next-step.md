@@ -7,10 +7,12 @@
 
 ---
 
-- /gsd:discuss-phase 2
-- /gsd:plan-phase 2
-- /gsd:execute-phase 2
+- /gsd:discuss-phase 2 ✅
+- /gsd:plan-phase 2 ✅
+- /gsd:execute-phase 2 ✅
 - /gsd:verify-work 2
+- Tạo `docs/coding-progress/phase-02-infrastructure-pipeline.md` (kiến thức junior cần nắm)
+- Cập nhật `docs/coding-progress/_index.md`
 
 ---
 
