@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-infrastructure-application-pipeline/02-02-PLAN.md
-last_updated: "2026-03-17T15:37:32.368Z"
+stopped_at: Completed 02-infrastructure-application-pipeline/02-03-PLAN.md
+last_updated: "2026-03-17T15:44:01.727Z"
 last_activity: 2026-03-12 — Roadmap created, 10 phases derived from 54 v1 requirements
 progress:
   total_phases: 10
   completed_phases: 1
   total_plans: 8
-  completed_plans: 6
+  completed_plans: 7
   percent: 0
 ---
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-monorepo-foundation-domain-layer P04 | 3 | 1 tasks | 2 files |
 | Phase 02-infrastructure-application-pipeline P01 | 4min | 2 tasks | 22 files |
 | Phase 02-infrastructure-application-pipeline P02 | 4min | 2 tasks | 13 files |
+| Phase 02-infrastructure-application-pipeline P03 | 3min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase 02-02]: UnitOfWork clears domain events BEFORE SaveChangesAsync to prevent double-dispatch; handler failures after commit are logged and swallowed
 - [Phase 02-02]: RedisCacheService.RemoveByPatternAsync uses Lua SCAN+DEL with ScriptEvaluateAsync(values:) — never KEYS which blocks Redis event loop
 - [Phase 02-02]: NoOp stubs (email/storage) log debug and return gracefully — not throw — so Phase 2 works without SMTP or MinIO infrastructure
+- [Phase 02-03]: TagCreatedCacheInvalidationHandler uses private const pattern string instead of CacheKeys.Patterns.TagList to prevent Application->Infrastructure layer violation
+- [Phase 02-03]: BlogDbContext registration kept in Program.cs for EF Core migration tooling compatibility — dotnet ef migrations requires DbContext reachable from startup project
+- [Phase 02-03]: public partial class Program {} at end of Program.cs enables WebApplicationFactory<Program> across assembly boundaries in Blog.IntegrationTests
 
 ### Pending Todos
 
@@ -98,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T15:37:32.364Z
-Stopped at: Completed 02-infrastructure-application-pipeline/02-02-PLAN.md
+Last session: 2026-03-17T15:44:01.723Z
+Stopped at: Completed 02-infrastructure-application-pipeline/02-03-PLAN.md
 Resume file: None
